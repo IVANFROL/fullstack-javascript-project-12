@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const validationSchema = Yup.object({
     username: Yup.string()
       .min(3, 'Имя пользователя должно содержать минимум 3 символа')
@@ -17,9 +24,23 @@ const LoginPage = () => {
     password: '',
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log('Данные формы:', values);
-    setSubmitting(false);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      setError('');
+      const response = await axios.post('/api/v1/login', {
+        username: values.username,
+        password: values.password,
+      });
+
+      if (response.data.token) {
+        login(response.data.token);
+        navigate('/');
+      }
+    } catch (err) {
+      setError('Неверное имя пользователя или пароль');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -33,6 +54,12 @@ const LoginPage = () => {
         >
           {({ isSubmitting }) => (
             <Form className="login-form">
+              {error && (
+                <div className="error-message" style={{ marginBottom: '1rem', textAlign: 'center' }}>
+                  {error}
+                </div>
+              )}
+              
               <div className="form-group">
                 <label htmlFor="username">Имя пользователя:</label>
                 <Field
