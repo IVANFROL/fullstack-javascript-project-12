@@ -15,6 +15,7 @@ class SocketService {
     }
 
     const token = localStorage.getItem('jwtToken');
+    console.log('Socket connect - Token found:', !!token);
     if (!token) {
       console.error('No JWT token found');
       return null;

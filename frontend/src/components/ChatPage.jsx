@@ -10,10 +10,21 @@ import MessageForm from './MessageForm';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { channels, currentChannelId, loading: channelsLoading } = useSelector(state => state.channels);
   const { messagesByChannel, loading: messagesLoading } = useSelector(state => state.messages);
   const [connectionStatus, setConnectionStatus] = React.useState({ isConnected: false, reconnectAttempts: 0 });
+
+  // Проверяем авторизацию
+  if (!user || !user.token) {
+    return (
+      <div className="chat-page">
+        <div className="loading-container">
+          <div className="loading">Ошибка авторизации. Перенаправление на страницу входа...</div>
+        </div>
+      </div>
+    );
+  }
 
   // Загружаем каналы при монтировании компонента
   useEffect(() => {

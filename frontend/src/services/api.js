@@ -13,8 +13,11 @@ const api = axios.create({
 // Интерцептор для добавления токена к каждому запросу
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
+  console.log('API Request - Token found:', !!token);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    console.warn('No JWT token found in localStorage');
   }
   return config;
 });

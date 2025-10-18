@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Проверяем токен при загрузке приложения
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwtToken');
     if (token) {
       setUser({ token });
     }
@@ -24,12 +24,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem('jwtToken', token);
     setUser({ token });
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwtToken');
     setUser(null);
   };
 
