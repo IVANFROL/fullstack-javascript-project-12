@@ -5,6 +5,9 @@ const ChannelsList = ({ channels, currentChannelId, onChannelSelect }) => {
     <div className="channels-list">
       <div className="channels-header">
         <h3>Каналы</h3>
+        <button className="add-channel-btn" title="Добавить канал">
+          <span>+</span>
+        </button>
       </div>
       <div className="channels-items">
         {channels.map(channel => (
