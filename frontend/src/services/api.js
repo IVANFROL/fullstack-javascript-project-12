@@ -39,7 +39,7 @@ export const messagesAPI = {
   // Получить сообщения канала
   getMessages: (channelId) => api.get(`/messages?channelId=${channelId}`),
   
-  // Отправить новое сообщение
+  // Отправить новое сообщение через HTTP (fallback)
   sendMessage: (channelId, body) => api.post('/messages', { channelId, body }),
   
   // Удалить сообщение

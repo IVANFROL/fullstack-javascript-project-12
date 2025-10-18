@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../contexts/AuthContext';
 import { fetchChannels, setCurrentChannel } from '../store/slices/channelsSlice';
-import { fetchMessages } from '../store/slices/messagesSlice';
+import { fetchMessages, addMessage } from '../store/slices/messagesSlice';
+import socketService from '../services/socket';
 import ChannelsList from './ChannelsList';
 import MessagesList from './MessagesList';
 import MessageForm from './MessageForm';
@@ -12,17 +13,55 @@ const ChatPage = () => {
   const { logout } = useAuth();
   const { channels, currentChannelId, loading: channelsLoading } = useSelector(state => state.channels);
   const { messagesByChannel, loading: messagesLoading } = useSelector(state => state.messages);
+  const [connectionStatus, setConnectionStatus] = React.useState({ isConnected: false, reconnectAttempts: 0 });
 
   // Загружаем каналы при монтировании компонента
   useEffect(() => {
     dispatch(fetchChannels());
+    
+    // Подключаемся к WebSocket
+    socketService.connect();
+    
+    // Обновляем статус подключения
+    const updateConnectionStatus = () => {
+      setConnectionStatus(socketService.getConnectionStatus());
+    };
+    
+    // Обработчик новых сообщений
+    const handleNewMessage = (event) => {
+      const message = event.detail;
+      dispatch(addMessage({
+        channelId: message.channelId,
+        message: message
+      }));
+    };
+    
+    window.addEventListener('socket:newMessage', handleNewMessage);
+    
+    // Обновляем статус каждые 2 секунды
+    const statusInterval = setInterval(updateConnectionStatus, 2000);
+    
+    return () => {
+      window.removeEventListener('socket:newMessage', handleNewMessage);
+      clearInterval(statusInterval);
+      socketService.disconnect();
+    };
   }, [dispatch]);
 
   // Загружаем сообщения при смене канала
   useEffect(() => {
     if (currentChannelId) {
       dispatch(fetchMessages(currentChannelId));
+      
+      // Подписываемся на канал через WebSocket
+      socketService.joinChannel(currentChannelId);
     }
+    
+    return () => {
+      if (currentChannelId) {
+        socketService.leaveChannel(currentChannelId);
+      }
+    };
   }, [dispatch, currentChannelId]);
 
   const handleChannelSelect = (channelId) => {
@@ -45,7 +84,17 @@ const ChatPage = () => {
     <div className="chat-page">
       <div className="chat-container">
         <div className="chat-header">
-          <h1>Hexlet Chat</h1>
+          <div className="chat-title">
+            <h1>Hexlet Chat</h1>
+            <div className={`connection-status ${connectionStatus.isConnected ? 'connected' : 'disconnected'}`}>
+              {connectionStatus.isConnected ? '🟢 Подключено' : '🔴 Отключено'}
+              {connectionStatus.reconnectAttempts > 0 && (
+                <span className="reconnect-info">
+                  (попытка {connectionStatus.reconnectAttempts}/5)
+                </span>
+              )}
+            </div>
+          </div>
           <button 
             className="logout-button"
             onClick={logout}

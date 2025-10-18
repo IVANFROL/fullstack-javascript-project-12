@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { messagesAPI } from '../../services/api';
+import socketService from '../../services/socket';
 
 // Асинхронные действия
 export const fetchMessages = createAsyncThunk(
@@ -18,10 +19,17 @@ export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
   async ({ channelId, body }, { rejectWithValue }) => {
     try {
-      const response = await messagesAPI.sendMessage(channelId, body);
-      return response.data;
+      // Сначала пытаемся отправить через WebSocket
+      if (socketService.getConnectionStatus().isConnected) {
+        const response = await socketService.sendMessage(channelId, body);
+        return response;
+      } else {
+        // Fallback на HTTP
+        const response = await messagesAPI.sendMessage(channelId, body);
+        return response.data;
+      }
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка отправки сообщения');
+      return rejectWithValue(error.response?.data?.message || error.message || 'Ошибка отправки сообщения');
     }
   }
 );
