@@ -8,4 +8,9 @@ npm install
 echo "Building frontend..."
 npm run build
 
+echo "Copying files for server..."
+cd ..
+rm -rf build
+cp -r frontend/dist build
+
 echo "Build completed successfully!"

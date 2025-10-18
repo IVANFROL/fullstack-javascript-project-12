@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./build.sh",
-    "start": "npx start-server -s ./frontend/dist"
+    "start": "npx start-server -s ./build"
   },
   "keywords": [],
   "author": "",
