@@ -101,8 +101,8 @@ i18n
         translation: ru,
       },
     },
-    lng: 'en', // Дефолтная локаль - en для тестов
-    fallbackLng: 'en',
+    lng: 'ru', // Дефолтная локаль - ru для тестов
+    fallbackLng: 'ru',
     debug: false,
     interpolation: {
       escapeValue: false,
