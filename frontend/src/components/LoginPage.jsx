@@ -48,7 +48,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-page" data-testid="login-page">
       <div className="login-container">
         <h2>{t('auth.login')}</h2>
         <Formik
@@ -57,7 +57,7 @@ const LoginPage = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="login-form">
+            <Form className="login-form" data-testid="login-form">
               {error && (
                 <div className="error-message" style={{ marginBottom: '1rem', textAlign: 'center' }}>
                   {error}
@@ -71,6 +71,7 @@ const LoginPage = () => {
                   id="username"
                   name="username"
                   className="form-input"
+                  data-testid="username-input"
                 />
                 <ErrorMessage name="username" component="div" className="error-message" />
               </div>
@@ -82,6 +83,7 @@ const LoginPage = () => {
                   id="password"
                   name="password"
                   className="form-input"
+                  data-testid="password-input"
                 />
                 <ErrorMessage name="password" component="div" className="error-message" />
               </div>
@@ -90,6 +92,7 @@ const LoginPage = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className="submit-button"
+                data-testid="login-button"
               >
                 {isSubmitting ? t('auth.loginButtonLoading') : t('auth.loginButton')}
               </button>

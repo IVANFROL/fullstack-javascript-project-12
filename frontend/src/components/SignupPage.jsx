@@ -48,7 +48,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div className="signup-page" data-testid="signup-page">
       <div className="signup-container">
         <h2>{t('auth.signup')}</h2>
         <Formik
@@ -61,7 +61,7 @@ const SignupPage = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="signup-form">
+            <Form className="signup-form" data-testid="signup-form">
               <div className="form-group">
                 <label htmlFor="username">{t('auth.username')}</label>
                 <Field
@@ -70,6 +70,7 @@ const SignupPage = () => {
                   name="username"
                   className="form-input"
                   placeholder={t('auth.username')}
+                  data-testid="username-input"
                 />
                 <ErrorMessage name="username" component="div" className="error-message" />
               </div>
@@ -82,6 +83,7 @@ const SignupPage = () => {
                   name="password"
                   className="form-input"
                   placeholder={t('auth.password')}
+                  data-testid="password-input"
                 />
                 <ErrorMessage name="password" component="div" className="error-message" />
               </div>
@@ -94,6 +96,7 @@ const SignupPage = () => {
                   name="confirmPassword"
                   className="form-input"
                   placeholder={t('auth.confirmPassword')}
+                  data-testid="confirm-password-input"
                 />
                 <ErrorMessage name="confirmPassword" component="div" className="error-message" />
               </div>
@@ -102,6 +105,7 @@ const SignupPage = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className="submit-button"
+                data-testid="signup-button"
               >
                 {isSubmitting ? t('auth.signupButtonLoading') : t('auth.signupButton')}
               </button>
