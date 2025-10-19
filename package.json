@@ -12,12 +12,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
+    "@hexlet/chat-server": "^2.0.4",
+    "start-server": "^1.0.0"
   },
   "devDependencies": {
     "vite": "^7.1.10",
     "@vitejs/plugin-react": "^4.3.4",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "formik": "^2.4.5",
+    "yup": "^1.4.0",
+    "axios": "^1.7.7",
+    "socket.io-client": "^4.8.1",
+    "@reduxjs/toolkit": "^2.2.7",
+    "react-redux": "^9.1.2",
+    "react-i18next": "^15.1.1",
+    "i18next": "^23.15.1",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "react-toastify": "^10.0.5",
+    "leo-profanity": "^1.5.0",
+    "rollbar": "^2.26.2"
   }
 }
