@@ -11,7 +11,6 @@ import SignupPage from './components/SignupPage';
 import ChatPage from './components/ChatPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './components/NotFoundPage';
-import RollbarTest from './components/RollbarTest';
 import store from './store';
 import './utils/rollbar'; // Инициализируем Rollbar
 import './App.css';
@@ -47,8 +46,6 @@ function App() {
                 pauseOnHover
                 theme="light"
               />
-              {/* Тестовый компонент Rollbar (только для разработки) */}
-              {import.meta.env.DEV && <RollbarTest />}
             </div>
           </Router>
         </AuthProvider>
