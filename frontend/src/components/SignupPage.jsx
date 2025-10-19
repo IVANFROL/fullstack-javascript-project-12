@@ -34,7 +34,7 @@ const SignupPage = () => {
       if (response.data.token) {
         // Сохраняем токен и авторизуем пользователя
         login(response.data.token);
-        navigate('/');
+        navigate('/chat');
       }
     } catch (error) {
       if (error.response?.status === 409) {

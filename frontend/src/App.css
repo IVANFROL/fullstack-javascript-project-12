@@ -97,7 +97,15 @@ body {
   font-weight: 400;
 }
 
-.login-link {
+.home-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.login-link,
+.signup-link {
   display: inline-block;
   padding: 1rem 2rem;
   background-color: #3b82f6;
@@ -109,10 +117,23 @@ body {
   font-size: 1.1rem;
 }
 
-.login-link:hover {
-  background-color: #2563eb;
+.signup-link {
+  background-color: #10b981;
+}
+
+.login-link:hover,
+.signup-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.login-link:hover {
+  background-color: #2563eb;
+}
+
+.signup-link:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 /* Login Page */

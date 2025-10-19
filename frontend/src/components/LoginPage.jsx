@@ -37,7 +37,7 @@ const LoginPage = () => {
 
       if (response.data.token) {
         login(response.data.token);
-        navigate('/');
+        navigate('/chat');
       }
     } catch (err) {
       console.error('Login error:', err);
