@@ -6,9 +6,9 @@
   "auth": {
     "login": "Авторизация",
     "signup": "Регистрация",
-    "username": "Имя пользователя",
+    "username": "Ваш ник",
     "password": "Пароль",
-    "confirmPassword": "Подтверждение пароля",
+    "confirmPassword": "Подтвердите пароль",
     "loginButton": "Войти",
     "signupButton": "Зарегистрироваться",
     "loginButtonLoading": "Вход...",
@@ -19,7 +19,7 @@
     "loginLink": "Войти",
     "loginError": "Неверное имя пользователя или пароль",
     "signupError": "Ошибка регистрации. Попробуйте еще раз.",
-    "userExists": "Пользователь с таким именем уже существует"
+    "userExists": "Такой пользователь уже существует"
   },
   "validation": {
     "usernameRequired": "Имя пользователя обязательно",
