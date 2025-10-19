@@ -14,6 +14,7 @@ cd ..
 # Копируем собранные файлы в build директорию для сервера
 echo "Copying build files..."
 rm -rf build
-cp -r frontend/dist build
+mkdir -p build
+cp -r frontend/dist/* build/
 
 echo "Build completed successfully!"
