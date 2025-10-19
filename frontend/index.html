@@ -45,21 +45,46 @@
     </div>
     
     <script>
-        // Простая навигация для тестирования
+        // Простая навигация с поддержкой роутинга
+        function showPage(pageId) {
+            // Скрыть все страницы
+            document.getElementById('signup-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'none';
+            
+            // Показать нужную страницу
+            if (pageId) {
+                document.getElementById(pageId).style.display = 'block';
+            }
+        }
+        
+        // Обработка навигации
+        function handleNavigation() {
+            const path = window.location.pathname;
+            if (path === '/signup') {
+                showPage('signup-page');
+            } else if (path === '/login') {
+                showPage('login-page');
+            } else {
+                showPage(null);
+            }
+        }
+        
+        // Обработка кликов по ссылкам
         const links = document.querySelectorAll('a');
         links.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const href = link.getAttribute('href');
-                if (href === '/signup') {
-                    document.getElementById('signup-page').style.display = 'block';
-                    document.getElementById('login-page').style.display = 'none';
-                } else if (href === '/login') {
-                    document.getElementById('login-page').style.display = 'block';
-                    document.getElementById('signup-page').style.display = 'none';
-                }
+                window.history.pushState({}, '', href);
+                handleNavigation();
             });
         });
+        
+        // Обработка кнопки "назад"
+        window.addEventListener('popstate', handleNavigation);
+        
+        // Инициализация
+        handleNavigation();
     </script>
 </body>
 </html>
