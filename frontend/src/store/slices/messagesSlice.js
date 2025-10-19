@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import { messagesAPI } from '../../services/api';
+import { isNetworkError } from '../../utils/networkUtils';
 import socketService from '../../services/socket';
 
 // Асинхронные действия
@@ -10,7 +12,13 @@ export const fetchMessages = createAsyncThunk(
       const response = await messagesAPI.getMessages(channelId);
       return { channelId, messages: response.data };
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки сообщений');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка загрузки сообщений');
+      }
+      const errorMessage = error.response?.data?.message || 'Ошибка загрузки сообщений';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -19,17 +27,23 @@ export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
   async ({ channelId, body }, { rejectWithValue }) => {
     try {
-      // Сначала пытаемся отправить через WebSocket
-      if (socketService.getConnectionStatus().isConnected) {
-        const response = await socketService.sendMessage(channelId, body);
-        return response;
-      } else {
-        // Fallback на HTTP
-        const response = await messagesAPI.sendMessage(channelId, body);
-        return response.data;
-      }
+      // Используем только HTTP API для отправки сообщений
+      const response = await messagesAPI.sendMessage(channelId, body);
+      // Используем реальное время отправки
+      const messageWithTime = {
+        ...response.data,
+        createdAt: new Date().toISOString()
+      };
+      toast.success('Сообщение отправлено');
+      return messageWithTime;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message || 'Ошибка отправки сообщения');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка отправки сообщения');
+      }
+      const errorMessage = error.response?.data?.message || error.message || 'Ошибка отправки сообщения';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -80,7 +94,36 @@ const messagesSlice = createSlice({
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.loading = false;
         const { channelId, messages } = action.payload;
-        state.messagesByChannel[channelId] = messages;
+        // Загружаем сохраненные времена из localStorage
+        const savedTimes = JSON.parse(localStorage.getItem('messageTimes') || '{}');
+        
+        const messagesWithTime = messages.map((message) => {
+          if (message.createdAt) {
+            return message; // Если время уже есть, оставляем как есть
+          }
+          
+          // Проверяем, есть ли сохраненное время для этого сообщения
+          const messageKey = `${channelId}-${message.id}`;
+          if (savedTimes[messageKey]) {
+            return {
+              ...message,
+              createdAt: savedTimes[messageKey]
+            };
+          }
+          
+          // Если нет сохраненного времени, используем текущее время
+          const currentTime = new Date().toISOString();
+          savedTimes[messageKey] = currentTime;
+          
+          return {
+            ...message,
+            createdAt: currentTime
+          };
+        });
+        
+        // Сохраняем времена в localStorage
+        localStorage.setItem('messageTimes', JSON.stringify(savedTimes));
+        state.messagesByChannel[channelId] = messagesWithTime;
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
@@ -94,6 +137,12 @@ const messagesSlice = createSlice({
           state.messagesByChannel[channelId] = [];
         }
         state.messagesByChannel[channelId].push(message);
+        
+        // Сохраняем время нового сообщения в localStorage
+        const savedTimes = JSON.parse(localStorage.getItem('messageTimes') || '{}');
+        const messageKey = `${channelId}-${message.id}`;
+        savedTimes[messageKey] = message.createdAt;
+        localStorage.setItem('messageTimes', JSON.stringify(savedTimes));
       })
       // Delete message
       .addCase(deleteMessage.fulfilled, (state, action) => {

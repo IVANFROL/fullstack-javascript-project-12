@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import { channelsAPI } from '../../services/api';
+import { isNetworkError } from '../../utils/networkUtils';
 
 // Асинхронные действия
 export const fetchChannels = createAsyncThunk(
@@ -9,7 +11,13 @@ export const fetchChannels = createAsyncThunk(
       const response = await channelsAPI.getChannels();
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки каналов');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка загрузки каналов');
+      }
+      const errorMessage = error.response?.data?.message || 'Ошибка загрузки каналов';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -19,9 +27,16 @@ export const createChannel = createAsyncThunk(
   async (name, { rejectWithValue }) => {
     try {
       const response = await channelsAPI.createChannel(name);
+      toast.success('Канал создан');
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка создания канала');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка создания канала');
+      }
+      const errorMessage = error.response?.data?.message || 'Ошибка создания канала';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -31,9 +46,16 @@ export const deleteChannel = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await channelsAPI.deleteChannel(id);
+      toast.success('Канал удален');
       return id;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка удаления канала');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка удаления канала');
+      }
+      const errorMessage = error.response?.data?.message || 'Ошибка удаления канала';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -43,9 +65,16 @@ export const renameChannel = createAsyncThunk(
   async ({ id, name }, { rejectWithValue }) => {
     try {
       const response = await channelsAPI.renameChannel(id, name);
+      toast.success('Канал переименован');
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Ошибка переименования канала');
+      if (isNetworkError(error)) {
+        toast.error('Ошибка сети. Проверьте подключение к интернету');
+      } else {
+        toast.error('Ошибка переименования канала');
+      }
+      const errorMessage = error.response?.data?.message || 'Ошибка переименования канала';
+      return rejectWithValue(errorMessage);
     }
   }
 );

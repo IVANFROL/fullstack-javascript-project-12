@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, 'Имя пользователя должно содержать минимум 3 символа')
-      .required('Имя пользователя обязательно'),
+      .min(3, t('validation.usernameMin'))
+      .max(20, t('validation.usernameMax'))
+      .required(t('validation.usernameRequired')),
     password: Yup.string()
-      .min(1, 'Пароль обязателен')
-      .required('Пароль обязателен'),
+      .min(6, t('validation.passwordMin'))
+      .required(t('validation.passwordRequired')),
   });
 
   const initialValues = {
@@ -37,7 +40,8 @@ const LoginPage = () => {
         navigate('/');
       }
     } catch (err) {
-      setError('Неверное имя пользователя или пароль');
+      console.error('Login error:', err);
+      setError(t('auth.loginError'));
     } finally {
       setSubmitting(false);
     }
@@ -46,7 +50,7 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <h2>Авторизация</h2>
+        <h2>{t('auth.login')}</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -61,7 +65,7 @@ const LoginPage = () => {
               )}
               
               <div className="form-group">
-                <label htmlFor="username">Имя пользователя:</label>
+                <label htmlFor="username">{t('auth.username')}:</label>
                 <Field
                   type="text"
                   id="username"
@@ -72,7 +76,7 @@ const LoginPage = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Пароль:</label>
+                <label htmlFor="password">{t('auth.password')}:</label>
                 <Field
                   type="password"
                   id="password"
@@ -87,11 +91,15 @@ const LoginPage = () => {
                 disabled={isSubmitting}
                 className="submit-button"
               >
-                {isSubmitting ? 'Вход...' : 'Войти'}
+                {isSubmitting ? t('auth.loginButtonLoading') : t('auth.loginButton')}
               </button>
             </Form>
           )}
         </Formik>
+
+        <div className="login-links">
+          <p>{t('auth.noAccount')} <Link to="/signup">{t('auth.signupLink')}</Link></p>
+        </div>
       </div>
     </div>
   );

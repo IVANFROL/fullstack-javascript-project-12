@@ -1,4 +1,4 @@
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client'; // WebSocket отключен
 
 class SocketService {
   constructor() {
@@ -10,26 +10,11 @@ class SocketService {
   }
 
   connect() {
-    if (this.socket && this.isConnected) {
-      return this.socket;
-    }
-
-    const token = localStorage.getItem('jwtToken');
-    console.log('Socket connect - Token found:', !!token);
-    if (!token) {
-      console.error('No JWT token found');
-      return null;
-    }
-
-    this.socket = io('http://localhost:5001', {
-      auth: {
-        token: token
-      },
-      transports: ['websocket', 'polling']
-    });
-
-    this.setupEventListeners();
-    return this.socket;
+    // Отключаем WebSocket из-за проблем с CORS
+    // Используем только HTTP запросы для отправки сообщений
+    console.log('WebSocket отключен - используем только HTTP запросы');
+    this.isConnected = false;
+    return null;
   }
 
   setupEventListeners() {
@@ -107,20 +92,11 @@ class SocketService {
   }
 
   // Отправить сообщение
-  sendMessage(channelId, message) {
-    if (this.socket && this.isConnected) {
-      return new Promise((resolve, reject) => {
-        this.socket.emit('newMessage', { channelId, body: message }, (response) => {
-          if (response && response.error) {
-            reject(new Error(response.error));
-          } else {
-            resolve(response);
-          }
-        });
-      });
-    } else {
-      return Promise.reject(new Error('Socket not connected'));
-    }
+  // eslint-disable-next-line no-unused-vars
+  sendMessage(_channelId, _message) {
+    // WebSocket отключен, всегда возвращаем ошибку
+    // Отправка сообщений будет происходить через HTTP API
+    return Promise.reject(new Error('WebSocket отключен - используйте HTTP API'));
   }
 
   // Получить статус подключения

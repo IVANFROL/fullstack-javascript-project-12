@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logError, logWarning } from '../utils/rollbar';
 
 const API_BASE_URL = '/api/v1';
 
@@ -18,9 +19,30 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
     console.warn('No JWT token found in localStorage');
+    logWarning('API request without JWT token', {
+      url: config.url,
+      method: config.method
+    });
   }
   return config;
 });
+
+// Интерцептор для обработки ошибок ответов
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Логируем ошибки API в Rollbar
+    logError(error, {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data
+    });
+    
+    return Promise.reject(error);
+  }
+);
 
 // API для каналов
 export const channelsAPI = {

@@ -30,49 +30,15 @@ const ChatPage = () => {
   useEffect(() => {
     dispatch(fetchChannels());
     
-    // Подключаемся к WebSocket
-    socketService.connect();
-    
-    // Обновляем статус подключения
-    const updateConnectionStatus = () => {
-      setConnectionStatus(socketService.getConnectionStatus());
-    };
-    
-    // Обработчик новых сообщений
-    const handleNewMessage = (event) => {
-      const message = event.detail;
-      dispatch(addMessage({
-        channelId: message.channelId,
-        message: message
-      }));
-    };
-    
-    window.addEventListener('socket:newMessage', handleNewMessage);
-    
-    // Обновляем статус каждые 2 секунды
-    const statusInterval = setInterval(updateConnectionStatus, 2000);
-    
-    return () => {
-      window.removeEventListener('socket:newMessage', handleNewMessage);
-      clearInterval(statusInterval);
-      socketService.disconnect();
-    };
+    // WebSocket отключен, используем только HTTP API
+    setConnectionStatus({ isConnected: false, reconnectAttempts: 0 });
   }, [dispatch]);
 
   // Загружаем сообщения при смене канала
   useEffect(() => {
     if (currentChannelId) {
       dispatch(fetchMessages(currentChannelId));
-      
-      // Подписываемся на канал через WebSocket
-      socketService.joinChannel(currentChannelId);
     }
-    
-    return () => {
-      if (currentChannelId) {
-        socketService.leaveChannel(currentChannelId);
-      }
-    };
   }, [dispatch, currentChannelId]);
 
   const handleChannelSelect = (channelId) => {
@@ -94,25 +60,6 @@ const ChatPage = () => {
   return (
     <div className="chat-page">
       <div className="chat-container">
-        <div className="chat-header">
-          <div className="chat-title">
-            <h1>Hexlet Chat</h1>
-            <div className={`connection-status ${connectionStatus.isConnected ? 'connected' : 'disconnected'}`}>
-              {connectionStatus.isConnected ? '🟢 Подключено' : '🔴 Отключено'}
-              {connectionStatus.reconnectAttempts > 0 && (
-                <span className="reconnect-info">
-                  (попытка {connectionStatus.reconnectAttempts}/5)
-                </span>
-              )}
-            </div>
-          </div>
-          <button 
-            className="logout-button"
-            onClick={logout}
-          >
-            Выйти
-          </button>
-        </div>
         <div className="chat-content">
           <div className="channels-sidebar">
             <ChannelsList 

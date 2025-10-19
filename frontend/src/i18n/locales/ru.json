@@ -1,0 +1,83 @@
+{
+  "header": {
+    "title": "Hexlet Chat",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "login": "Авторизация",
+    "signup": "Регистрация",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "confirmPassword": "Подтверждение пароля",
+    "loginButton": "Войти",
+    "signupButton": "Зарегистрироваться",
+    "loginButtonLoading": "Вход...",
+    "signupButtonLoading": "Регистрация...",
+    "noAccount": "Нет аккаунта?",
+    "haveAccount": "Уже есть аккаунт?",
+    "signupLink": "Зарегистрироваться",
+    "loginLink": "Войти",
+    "loginError": "Неверное имя пользователя или пароль",
+    "signupError": "Ошибка регистрации. Попробуйте еще раз.",
+    "userExists": "Пользователь с таким именем уже существует"
+  },
+  "validation": {
+    "usernameRequired": "Имя пользователя обязательно",
+    "usernameMin": "От 3 до 20 символов",
+    "usernameMax": "От 3 до 20 символов",
+    "passwordRequired": "Пароль обязателен",
+    "passwordMin": "Не менее 6 символов",
+    "confirmPasswordRequired": "Подтверждение пароля обязательно",
+    "passwordsMatch": "Пароли должны совпадать"
+  },
+  "chat": {
+    "title": "Hexlet Chat",
+    "status": "HTTP API",
+    "channels": "Каналы",
+    "addChannel": "Добавить канал",
+    "noChannelSelected": "Выберите канал для начала общения",
+    "noMessages": "Пока нет сообщений. Начните общение!",
+    "messagePlaceholder": "Введите сообщение...",
+    "sendButton": "Отправить",
+    "sending": "Отправка...",
+    "loading": "Загрузка...",
+    "loadingMessages": "Загрузка сообщений...",
+    "authError": "Ошибка авторизации. Перенаправление на страницу входа...",
+    "now": "Сейчас",
+    "connectionError": "Ошибка соединения",
+    "addChannelButton": "+",
+    "channelName": "Имя канала",
+    "channelManagement": "Управление каналом",
+    "renameChannel": "Переименовать",
+    "deleteChannel": "Удалить"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Страница не найдена",
+    "message": "Извините, запрашиваемая страница не существует.",
+    "homeLink": "Вернуться на главную"
+  },
+  "home": {
+    "title": "Добро пожаловать в Hexlet Chat!",
+    "subtitle": "Современный чат для общения и сотрудничества",
+    "loginLink": "Войти в чат"
+  },
+  "notifications": {
+    "error": {
+      "networkError": "Ошибка сети. Проверьте подключение к интернету",
+      "loadDataError": "Ошибка загрузки данных",
+      "loadChannelsError": "Ошибка загрузки каналов",
+      "loadMessagesError": "Ошибка загрузки сообщений",
+      "sendMessageError": "Ошибка отправки сообщения",
+      "addChannelError": "Ошибка создания канала",
+      "renameChannelError": "Ошибка переименования канала",
+      "deleteChannelError": "Ошибка удаления канала"
+    },
+    "success": {
+      "channelCreated": "Канал создан",
+      "channelRenamed": "Канал переименован",
+      "channelDeleted": "Канал удалён",
+      "messageSent": "Сообщение отправлено"
+    }
+  }
+}
