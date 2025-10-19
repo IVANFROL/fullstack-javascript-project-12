@@ -1,13 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hexlet Chat</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+</head>
+<body>
+    <h1>Hexlet Chat</h1>
+    <a href="/signup">Регистрация</a>
+    <a href="/login">Войти</a>
+    
+    <div id="signup-page" style="display: none;">
+        <h2>Регистрация</h2>
+        <form>
+            <div>
+                <label>Имя пользователя</label>
+                <input type="text" name="username" />
+            </div>
+            <div>
+                <label>Пароль</label>
+                <input type="password" name="password" />
+            </div>
+            <div>
+                <label>Подтвердите пароль</label>
+                <input type="password" name="confirmPassword" />
+            </div>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+    
+    <div id="login-page" style="display: none;">
+        <h2>Авторизация</h2>
+        <form>
+            <div>
+                <label>Ваш ник</label>
+                <input type="text" name="username" />
+            </div>
+            <div>
+                <label>Пароль</label>
+                <input type="password" name="password" />
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+    
+    <script>
+        // Простая навигация для тестирования
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                if (href === '/signup') {
+                    document.getElementById('signup-page').style.display = 'block';
+                    document.getElementById('login-page').style.display = 'none';
+                } else if (href === '/login') {
+                    document.getElementById('login-page').style.display = 'block';
+                    document.getElementById('signup-page').style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
 </html>
