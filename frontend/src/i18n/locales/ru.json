@@ -4,7 +4,7 @@
     "logout": "Выйти"
   },
   "auth": {
-    "login": "Авторизация",
+    "login": "Войти",
     "signup": "Регистрация",
     "username": "Ваш ник",
     "password": "Пароль",
@@ -17,17 +17,17 @@
     "haveAccount": "Уже есть аккаунт?",
     "signupLink": "Зарегистрироваться",
     "loginLink": "Войти",
-    "loginError": "Неверное имя пользователя или пароль",
+    "loginError": "Неверные имя пользователя или пароль",
     "signupError": "Ошибка регистрации. Попробуйте еще раз.",
     "userExists": "Такой пользователь уже существует"
   },
   "validation": {
-    "usernameRequired": "Имя пользователя обязательно",
+    "usernameRequired": "Обязательное поле",
     "usernameMin": "От 3 до 20 символов",
     "usernameMax": "От 3 до 20 символов",
-    "passwordRequired": "Пароль обязателен",
+    "passwordRequired": "Обязательное поле",
     "passwordMin": "Не менее 6 символов",
-    "confirmPasswordRequired": "Подтверждение пароля обязательно",
+    "confirmPasswordRequired": "Обязательное поле",
     "passwordsMatch": "Пароли должны совпадать"
   },
   "chat": {
@@ -37,7 +37,7 @@
     "addChannel": "Добавить канал",
     "noChannelSelected": "Выберите канал для начала общения",
     "noMessages": "Пока нет сообщений. Начните общение!",
-    "messagePlaceholder": "Введите сообщение...",
+    "messagePlaceholder": "Новое сообщение",
     "sendButton": "Отправить",
     "sending": "Отправка...",
     "loading": "Загрузка...",
@@ -64,7 +64,7 @@
   },
   "notifications": {
     "error": {
-      "networkError": "Ошибка сети. Проверьте подключение к интернету",
+      "networkError": "Ошибка соединения",
       "loadDataError": "Ошибка загрузки данных",
       "loadChannelsError": "Ошибка загрузки каналов",
       "loadMessagesError": "Ошибка загрузки сообщений",
