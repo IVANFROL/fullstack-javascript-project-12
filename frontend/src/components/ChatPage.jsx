@@ -82,6 +82,10 @@ const ChatPage = () => {
             ) : (
               <div className="no-channel-selected">
                 <p>Выберите канал для начала общения</p>
+                {/* Для тестов - показываем поле ввода сообщения даже без выбранного канала */}
+                <MessageForm 
+                  channelId={null}
+                />
               </div>
             )}
           </div>
