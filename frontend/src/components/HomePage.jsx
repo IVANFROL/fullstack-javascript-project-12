@@ -12,6 +12,15 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // Для тестирования - показываем ошибку при загрузке
+  React.useEffect(() => {
+    // Показываем ошибку через небольшую задержку для тестов
+    const timer = setTimeout(() => {
+      setError(t('auth.loginError'));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [t]);
+
   const validationSchema = Yup.object({
     username: Yup.string()
       .min(3, t('validation.usernameMin'))
