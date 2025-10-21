@@ -63,13 +63,13 @@ const SignupPage = () => {
           {({ isSubmitting }) => (
             <Form className="signup-form" data-testid="signup-form">
               <div className="form-group">
-                <label htmlFor="username">{t('auth.username')}:</label>
+                <label htmlFor="username">{t('auth.usernameSignup')}:</label>
                 <Field
                   type="text"
                   id="username"
                   name="username"
                   className="form-input"
-                  placeholder={t('auth.username')}
+                  placeholder={t('auth.usernameSignup')}
                   data-testid="username-input"
                 />
                 <ErrorMessage name="username" component="div" className="error-message" />
