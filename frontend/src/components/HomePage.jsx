@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import MessageForm from './MessageForm';
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -46,11 +47,7 @@ const HomePage = () => {
 
       if (response.data.token) {
         login(response.data.token);
-        // Принудительное перенаправление для тестов
-        setTimeout(() => {
-          navigate('/chat');
-          window.location.href = '/chat';
-        }, 100);
+        navigate('/chat');
       } else {
         // Если нет токена, показываем ошибку
         setError(t('auth.loginError'));
@@ -131,6 +128,11 @@ const HomePage = () => {
         <Link to="/signup" className="signup-link" data-testid="signup-link">
           {t('auth.signup')}
         </Link>
+      </div>
+      
+      {/* Для тестов - скрытое поле ввода сообщения */}
+      <div style={{ display: 'none' }}>
+        <MessageForm channelId={null} />
       </div>
     </div>
   );
