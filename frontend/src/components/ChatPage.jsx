@@ -46,6 +46,7 @@ const ChatPage = () => {
   };
 
   const currentMessages = currentChannelId ? messagesByChannel[currentChannelId] || [] : [];
+  const fallbackChannelId = currentChannelId ?? (channels.length > 0 ? channels[0].id : null);
 
   // Не блокируем рендер полностью во время загрузки каналов,
   // чтобы поле ввода сообщения было доступно для тестов
@@ -62,14 +63,14 @@ const ChatPage = () => {
             />
           </div>
           <div className="messages-area">
-            {currentChannelId && !channelsLoading ? (
+            {fallbackChannelId && !channelsLoading ? (
               <>
                 <MessagesList 
-                  messages={currentMessages}
+                  messages={messagesByChannel[fallbackChannelId] || []}
                   loading={messagesLoading}
                 />
                 <MessageForm 
-                  channelId={currentChannelId}
+                  channelId={fallbackChannelId}
                 />
               </>
             ) : (
