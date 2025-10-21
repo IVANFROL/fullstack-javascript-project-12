@@ -41,6 +41,7 @@ const HomePage = () => {
       }
     } catch (err) {
       console.error('Login error:', err);
+      // Показываем ошибку для любого неудачного запроса
       setError(t('auth.loginError'));
     } finally {
       setSubmitting(false);
