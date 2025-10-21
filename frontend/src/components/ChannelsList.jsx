@@ -96,6 +96,9 @@ const ChannelsList = ({ channels, currentChannelId, onChannelSelect }) => {
             zIndex: 1001
           }}
         >
+          <button onClick={() => setContextMenu({ show: false, x: 0, y: 0 })} className="context-menu-item">
+            {t('chat.channelManagement')}
+          </button>
           <button onClick={handleRenameChannel} className="context-menu-item">
             {t('chat.renameChannel')}
           </button>

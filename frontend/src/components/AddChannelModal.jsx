@@ -59,12 +59,15 @@ const AddChannelModal = ({ isOpen, onClose }) => {
         
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">
+            <label htmlFor="channelName">{t('chat.channelName')}</label>
             <input
               type="text"
+              id="channelName"
               value={channelName}
               onChange={(e) => setChannelName(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={t('chat.channelName')}
+              aria-label={t('chat.channelName')}
               className="form-input"
               autoFocus
               disabled={isSubmitting}
