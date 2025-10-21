@@ -13,7 +13,7 @@ const HomePage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { messagesByChannel } = useSelector(state => state.messages);
+  // убрал: const { messagesByChannel } = useSelector(state => state.messages);
 
   // Для тестирования - показываем ошибку при загрузке
   React.useEffect(() => {
@@ -130,20 +130,6 @@ const HomePage = () => {
         <Link to="/signup" className="signup-link" data-testid="signup-link">
           {t('auth.signup')}
         </Link>
-      </div>
-      
-      {/* Для тестов - скрытое поле ввода сообщения */}
-      <div style={{ display: 'none' }}>
-        <MessageForm channelId={null} />
-      </div>
-      
-      {/* Для тестов - отображение сообщений */}
-      <div style={{ display: 'none' }}>
-        {messagesByChannel[1]?.map((message, index) => (
-          <div key={index} data-testid={`message-${index}`}>
-            {message.body}
-          </div>
-        ))}
       </div>
     </div>
   );

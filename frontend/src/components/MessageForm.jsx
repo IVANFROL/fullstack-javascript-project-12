@@ -45,11 +45,8 @@ const MessageForm = ({ channelId }) => {
       // Фильтруем нецензурные слова в сообщении
       const cleanedText = cleanText(messageText.trim());
       
-      // Для тестов - если channelId null, используем первый доступный канал
-      const targetChannelId = channelId || 1; // Используем канал с ID 1 для тестов
-      
       await dispatch(sendMessage({
-        channelId: targetChannelId,
+        channelId,
         body: cleanedText
       }));
       setMessageText('');
