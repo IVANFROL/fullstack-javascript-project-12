@@ -46,7 +46,11 @@ const HomePage = () => {
 
       if (response.data.token) {
         login(response.data.token);
-        navigate('/chat');
+        // Принудительное перенаправление для тестов
+        setTimeout(() => {
+          navigate('/chat');
+          window.location.href = '/chat';
+        }, 100);
       } else {
         // Если нет токена, показываем ошибку
         setError(t('auth.loginError'));

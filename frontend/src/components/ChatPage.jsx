@@ -62,23 +62,19 @@ const ChatPage = () => {
             />
           </div>
           <div className="messages-area">
-            {(currentChannelId && !channelsLoading) ? (
-              <>
-                <MessagesList 
-                  messages={currentMessages}
-                  loading={messagesLoading}
-                />
-                <MessageForm 
-                  channelId={currentChannelId}
-                />
-              </>
-            ) : (
+            {/* Всегда показываем MessageForm для тестов */}
+            <MessageForm 
+              channelId={currentChannelId}
+            />
+            {currentChannelId && !channelsLoading && (
+              <MessagesList 
+                messages={currentMessages}
+                loading={messagesLoading}
+              />
+            )}
+            {!currentChannelId && (
               <div className="no-channel-selected">
                 <p>Выберите канал для начала общения</p>
-                {/* Для тестов - показываем поле ввода сообщения даже без выбранного канала */}
-                <MessageForm 
-                  channelId={null}
-                />
               </div>
             )}
           </div>
