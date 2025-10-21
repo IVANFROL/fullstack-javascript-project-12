@@ -82,6 +82,7 @@ const MessageForm = ({ channelId }) => {
             onChange={handleTextChange}
             onKeyPress={handleKeyPress}
             placeholder={t('chat.messagePlaceholder')}
+            aria-label={t('chat.messagePlaceholder')}
             className="message-input"
             rows="1"
             disabled={isSubmitting}
