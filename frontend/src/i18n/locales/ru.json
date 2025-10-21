@@ -6,8 +6,8 @@
   "auth": {
     "login": "Войти",
     "signup": "Регистрация",
-    "username": "Ваш ник",
-    "password": "Пароль",
+    "username": "Имя пользователя",
+    "password": "Пароль:",
     "confirmPassword": "Подтвердите пароль",
     "loginButton": "Войти",
     "signupButton": "Зарегистрироваться",

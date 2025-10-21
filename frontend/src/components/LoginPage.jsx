@@ -77,7 +77,7 @@ const LoginPage = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">{t('auth.password')}:</label>
+                <label htmlFor="password">{t('auth.password')}</label>
                 <Field
                   type="password"
                   id="password"

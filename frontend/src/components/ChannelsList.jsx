@@ -70,17 +70,18 @@ const ChannelsList = ({ channels, currentChannelId, onChannelSelect }) => {
       </div>
       <div className="channels-items">
         {channels.map(channel => (
-          <div
+          <button
             key={channel.id}
             className={`channel-item ${currentChannelId === channel.id ? 'active' : ''}`}
             onClick={() => onChannelSelect(channel.id)}
             onContextMenu={(e) => handleChannelRightClick(e, channel)}
+            type="button"
           >
-            <span className="channel-name"># {channel.name}</span>
+            {channel.name}
             {!channel.removable && (
               <span className="channel-badge">системный</span>
             )}
-          </div>
+          </button>
         ))}
       </div>
       

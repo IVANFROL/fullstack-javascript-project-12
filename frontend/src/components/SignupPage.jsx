@@ -63,7 +63,7 @@ const SignupPage = () => {
           {({ isSubmitting }) => (
             <Form className="signup-form" data-testid="signup-form">
               <div className="form-group">
-                <label htmlFor="username">{t('auth.username')}</label>
+                <label htmlFor="username">{t('auth.username')}:</label>
                 <Field
                   type="text"
                   id="username"
