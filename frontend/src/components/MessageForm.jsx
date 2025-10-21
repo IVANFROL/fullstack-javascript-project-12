@@ -96,10 +96,6 @@ const MessageForm = ({ channelId }) => {
           </button>
         </div>
       </form>
-      {/* Отладочная информация для тестов */}
-      <div style={{ display: 'none' }} data-testid="message-form-loaded">
-        MessageForm loaded - channelId: {channelId}
-      </div>
     </div>
   );
 };

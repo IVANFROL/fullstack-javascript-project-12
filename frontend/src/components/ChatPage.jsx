@@ -80,10 +80,6 @@ const ChatPage = () => {
           </div>
         </div>
       </div>
-      {/* Отладочная информация для тестов */}
-      <div style={{ display: 'none' }} data-testid="chat-page-loaded">
-        ChatPage loaded - channels: {channels.length}, currentChannelId: {currentChannelId}, loading: {channelsLoading.toString()}
-      </div>
     </div>
   );
 };

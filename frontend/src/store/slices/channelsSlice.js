@@ -107,10 +107,8 @@ const channelsSlice = createSlice({
       .addCase(fetchChannels.fulfilled, (state, action) => {
         state.loading = false;
         state.channels = action.payload;
-        // Set the first channel as current if none is selected
-        if (!state.currentChannelId && action.payload.length > 0) {
-          state.currentChannelId = action.payload[0].id;
-        }
+        // ВСЕГДА выбираем первый канал после загрузки
+        state.currentChannelId = action.payload.length > 0 ? action.payload[0].id : null;
       })
       .addCase(fetchChannels.rejected, (state, action) => {
         state.loading = false;
