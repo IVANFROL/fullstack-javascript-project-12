@@ -38,6 +38,9 @@ const HomePage = () => {
       if (response.data.token) {
         login(response.data.token);
         navigate('/chat');
+      } else {
+        // Если нет токена, показываем ошибку
+        setError(t('auth.loginError'));
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -62,7 +65,7 @@ const HomePage = () => {
           {({ isSubmitting }) => (
             <Form className="login-form" data-testid="login-form">
               {error && (
-                <div className="error-message" style={{ marginBottom: '1rem', textAlign: 'center' }}>
+                <div className="error-message" style={{ marginBottom: '1rem', textAlign: 'center' }} data-testid="login-error">
                   {error}
                 </div>
               )}
