@@ -57,10 +57,8 @@ rules:
   "functional/no-throw-statement": 0
   "no-underscore-dangle": [2, { "allow": ["__filename", "__dirname"] }]
   "testing-library/no-debug": 0
-  "@stylistic/arrow-parens": ["error", "as-needed", {
-    "requireForBlockBody": false,
-    "onlyOneParam": true
-  }]
+  "arrow-parens": 0
+  "@stylistic/arrow-parens": ["error", "as-needed"]
   "@stylistic/multiline-ternary": ["error", "always"]
   "@stylistic/brace-style": ["error", "1tbs", { "allowSingleLine": false }]
   "@stylistic/jsx-indent": ["error", 2]
