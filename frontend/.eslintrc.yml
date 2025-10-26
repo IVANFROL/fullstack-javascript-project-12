@@ -1,0 +1,67 @@
+env:
+  browser: true
+  es2021: true
+  node: true
+
+extends:
+  - airbnb
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: latest
+  sourceType: module
+
+plugins:
+  - import
+  - react
+  - "@stylistic"
+
+rules:
+  semi: 0
+  "@stylistic/indent": ["error", 2, {
+    "ignoredNodes": [
+      "TemplateLiteral",
+      "JSXElement",
+      "JSXAttribute",
+      "JSXSpreadAttribute"
+    ],
+    "SwitchCase": 1,
+    "outerIIFEBody": 1,
+    "MemberExpression": 1,
+    "FunctionExpression": {"parameters": "first"},
+    "CallExpression": {"arguments": "first"}
+  }]
+  "react/react-in-jsx-scope": 0
+  "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }]
+  "react/function-component-definition": [
+    2,
+    { 
+      namedComponents: "arrow-function",
+      unnamedComponents: "arrow-function"
+    }
+  ]
+  "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
+  "no-undef": 0
+  "import/extensions": 0
+  "import/no-unresolved": 0
+  "react/prop-types": 0
+  "no-console": 0
+  "functional/no-conditional-statement": 0
+  "functional/no-expression-statement": 0
+  "functional/immutable-data": 0
+  "functional/functional-parameters": 0
+  "functional/no-try-statement": 0
+  "functional/no-throw-statement": 0
+  "no-underscore-dangle": [2, { "allow": ["__filename", "__dirname"] }]
+  "testing-library/no-debug": 0
+  "@stylistic/arrow-parens": ["error", "as-needed", {
+    "requireForBlockBody": false,
+    "onlyOneParam": true
+  }]
+  "@stylistic/multiline-ternary": ["error", "always"]
+  "@stylistic/brace-style": ["error", "1tbs", { "allowSingleLine": false }]
+  "@stylistic/jsx-indent": ["error", 2]
+  "@stylistic/jsx-closing-bracket-location": ["error", "line-aligned"]

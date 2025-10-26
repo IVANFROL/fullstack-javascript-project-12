@@ -1,0 +1,10 @@
+@import '~bootstrap/scss/bootstrap';
+@import '~react-toastify/dist/ReactToastify.css';
+
+.channel-button:hover {
+  @extend .bg-info-subtle
+}
+
+.channel-button:focus {
+  @extend .bg-info-subtle
+}
