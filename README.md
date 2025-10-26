@@ -39,7 +39,7 @@ make start
 
 ## Ссылка на задеплоенное приложение
 
-🚀 **Приложение доступно по адресу:** https://fullstack-javascript-project-12-7o0o.onrender.com
+🚀 **Приложение доступно по адресу:** https://fullstack-javascript-project-12-ry9l.onrender.com
 
 ## Мониторинг ошибок
 
