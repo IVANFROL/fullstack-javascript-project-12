@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { chatApi } from '../api/chatApi.js'
 
 const initialState = {
   message: null,
@@ -24,18 +25,14 @@ const toastSlice = createSlice({
         }
         return Object.assign(state, { message: { id: 1, code: errorCode } })
       })
-      .addMatcher(isFulfilledAction, (state, payload) => {
-        switch (true) {
-          case /createChannel/.test(payload.type):
-            return Object.assign(state, { message: { id: 0, code: 'CHANNEL_CREATED' } })
-          case /renameChannel/.test(payload.type):
-            return Object.assign(state, { message: { id: 0, code: 'CHANNEL_RENAMED' } })
-          case /deleteChannel/.test(payload.type):
-            return Object.assign(state, { message: { id: 0, code: 'CHANNEL_DELETED' } })
-          default:
-            break
-        }
-        return state
+      .addMatcher(chatApi.endpoints.createChannel.matchFulfilled, (state) => {
+        return Object.assign(state, { message: { id: 0, code: 'CHANNEL_CREATED' } })
+      })
+      .addMatcher(chatApi.endpoints.renameChannel.matchFulfilled, (state) => {
+        return Object.assign(state, { message: { id: 0, code: 'CHANNEL_RENAMED' } })
+      })
+      .addMatcher(chatApi.endpoints.deleteChannel.matchFulfilled, (state) => {
+        return Object.assign(state, { message: { id: 0, code: 'CHANNEL_DELETED' } })
       })
   },
 })
