@@ -26,7 +26,7 @@ export const chatApi = createApi({
   reducerPath: 'chatApi',
   baseQuery,
   tagTypes: ['Channel', 'Message'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getChannels: builder.query({
       query: () => channelsRoute.getAll(),
       providesTags: ['Channel'],
@@ -48,7 +48,7 @@ export const chatApi = createApi({
       invalidatesTags: ['Channel'],
     }),
     deleteChannel: builder.mutation({
-      query: (channelId) => ({
+      query: channelId => ({
         url: channelsRoute.delete(channelId),
         method: 'DELETE',
       }),
@@ -60,7 +60,7 @@ export const chatApi = createApi({
       providesTags: ['Message'],
     }),
     sendMessage: builder.mutation({
-      query: (messageObj) => ({
+      query: messageObj => ({
         url: messagesRoute.post(),
         method: 'POST',
         body: messageObj,
@@ -68,14 +68,14 @@ export const chatApi = createApi({
       invalidatesTags: ['Message'],
     }),
     login: builder.mutation({
-      query: (credentials) => ({
+      query: credentials => ({
         url: usersRoutes.login(),
         method: 'POST',
         body: credentials,
       }),
     }),
     signup: builder.mutation({
-      query: (credentials) => ({
+      query: credentials => ({
         url: usersRoutes.signup(),
         method: 'POST',
         body: credentials,
@@ -96,4 +96,3 @@ export const {
   useLoginMutation,
   useSignupMutation,
 } = chatApi
-

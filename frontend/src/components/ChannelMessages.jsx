@@ -44,4 +44,3 @@ const ChannelMessages = () => {
 }
 
 export default ChannelMessages
-

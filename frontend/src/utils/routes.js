@@ -4,8 +4,6 @@ export const pages = {
   root: () => '/',
 }
 
-const verApi = import.meta.env.VITE_API_VER || '/api/v1'
-
 // Для RTK Query: возвращаем только относительные пути, так как baseUrl уже установлен
 export const users = {
   login: () => '/login',

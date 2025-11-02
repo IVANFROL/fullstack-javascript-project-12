@@ -15,7 +15,7 @@ export default configureStore({
     modals,
     [chatApi.reducerPath]: chatApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(chatApi.middleware),
   preloadedState: {
     channels: {
