@@ -1,4 +1,3 @@
-/* global process */
 import { ErrorBoundary, Provider as RollBarProvider } from '@rollbar/react'
 import ReactDOM from 'react-dom/client'
 import i18next from 'i18next'
@@ -8,6 +7,7 @@ import { Provider } from 'react-redux'
 import leo from 'leo-profanity'
 
 import './assets/application.scss'
+import 'react-toastify/dist/ReactToastify.css'
 import resources from './locales/index.js'
 import { initSocket } from './network/socket.js'
 import { pages } from './utils/routes.js'
@@ -18,12 +18,15 @@ import SignUp from './pages/SignUp.jsx'
 import Login from './pages/Login.jsx'
 import Main from './pages/Main.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
+import ModalManager from './components/ModalManager.jsx'
+import ToastListener from './components/ToastListener.jsx'
+import { ToastContainer } from 'react-toastify'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 const App = () => (
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="d-flex flex-column h-100">
         <MainHeader />
         <Routes>
@@ -39,6 +42,9 @@ const App = () => (
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ModalManager />
+        <ToastContainer pauseOnFocusLoss={false} />
+        <ToastListener />
       </div>
     </BrowserRouter>
   </Provider>
@@ -47,7 +53,7 @@ const App = () => (
 const init = async () => {
   const i18n = i18next.createInstance()
 
-  const mode = process.env.NODE_ENV || 'development'
+  const mode = import.meta.env.MODE || 'development'
   const isDevelop = mode === 'development'
 
   await i18n
@@ -68,8 +74,8 @@ const init = async () => {
   initSocket(store.dispatch)
 
   const rollbarConfig = {
-    accessToken: process.env.ROLLBACK_API_KEY,
-    environment: process.env.ROLLBACK_API_ENV_NAME,
+    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    environment: import.meta.env.VITE_ROLLBAR_ENVIRONMENT,
   }
 
   root.render(

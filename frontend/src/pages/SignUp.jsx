@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -8,18 +8,15 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import { useTranslation } from 'react-i18next'
 import { Formik } from 'formik'
-import { useDispatch } from 'react-redux'
 
 import signUpAvatarImage from '../assets/avatar_1.jpg'
 import { signUpSchema } from '../validation/schema'
-import { signUpRequest } from '../network/requests'
-import { authActions } from '../slices/auth'
 import { pages as pagesRoutes } from '../utils/routes'
+import useSignUp from '../hooks/useSignUp'
 
 const SignUp = () => {
   const { t } = useTranslation('Components', { keyPrefix: 'SignUp' })
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const { handleSignUp } = useSignUp()
   return (
     <Container
       fluid
@@ -51,21 +48,7 @@ const SignUp = () => {
                 }}
                 validateOnBlur
                 validationSchema={signUpSchema}
-                onSubmit={(values, actions) => {
-                  signUpRequest(values)
-                    .then((res) => {
-                      const token = JSON.stringify(res.data)
-                      localStorage.setItem('user', token)
-                      dispatch(authActions.setAuth(res.data))
-                    })
-                    .then(() => {
-                      navigate(pagesRoutes.root())
-                    })
-                    .catch((err) => {
-                      if (err.response.status === 409) actions.setFieldError('username', 'userExists')
-                      else throw new Error(err)
-                    })
-                }}
+                onSubmit={handleSignUp}
               >
                 {
                   props => (
@@ -195,18 +178,14 @@ const SignUp = () => {
                   t('Form.alreadyHaveAccount')
                 }
               </span>
-              <Card.Link
-                href={pagesRoutes.login()}
+              <Link
+                to={pagesRoutes.login()}
                 aria-label={t('Form.aria.backToLogin')}
-                onClick={(e) => {
-                  e.preventDefault()
-                  navigate(pagesRoutes.login())
-                }}
               >
                 {
                   t('Form.backToLogin')
                 }
-              </Card.Link>
+              </Link>
             </Card.Footer>
           </Card>
         </Col>

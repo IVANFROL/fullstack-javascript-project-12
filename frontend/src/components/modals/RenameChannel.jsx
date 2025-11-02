@@ -1,29 +1,27 @@
 import Modal from 'react-bootstrap/Modal'
 import { useFormik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import leo from 'leo-profanity'
 
-import { channelsSelectors, renameChannel, selectChannelById } from '../../slices/channels'
+import { useRenameChannelMutation } from '../../api/chatApi'
+import { channelsSelectors, selectChannelById } from '../../slices/channels'
 import { channelsNamingSchema } from '../../validation/schema'
-import { selectAuth } from '../../slices/auth'
 
-const RenameChannel = ({ handleSetState, modalState, extraData }) => {
+const RenameChannel = ({ handleClose, modalState, channelId }) => {
   const { t } = useTranslation('Components', { keyPrefix: 'RenameChannel' })
-  const dispatch = useDispatch()
-  const channelId = extraData
   const allChannels = useSelector(channelsSelectors.selectEntities)
-  const { token } = useSelector(selectAuth)
   const { name: currentChannelName } = useSelector(selectChannelById(channelId))
+  const [renameChannel] = useRenameChannelMutation()
 
   const formik = useFormik({
     initialValues: {
       channelName: currentChannelName,
     },
     validationSchema: channelsNamingSchema,
-    onSubmit: ({ channelName }) => {
+    onSubmit: async ({ channelName }) => {
       if (!formik.errors.channelName) {
         const channel = Object.values(allChannels).find(({ name }) => channelName === name)
         if (!channel) {
@@ -33,8 +31,8 @@ const RenameChannel = ({ handleSetState, modalState, extraData }) => {
             })
           }
           else {
-            dispatch(renameChannel({ token, channelName, channelId }))
-            handleSetState(false)
+            await renameChannel({ channelId, channelName })
+            handleClose()
           }
         }
         else {
@@ -46,10 +44,6 @@ const RenameChannel = ({ handleSetState, modalState, extraData }) => {
     },
     validateOnChange: true,
   })
-
-  const handleClose = () => {
-    handleSetState(false)
-  }
 
   return (
     <Modal show={modalState} onHide={handleClose} centered>

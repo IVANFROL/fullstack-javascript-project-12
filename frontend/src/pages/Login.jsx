@@ -5,18 +5,22 @@ import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Image from 'react-bootstrap/Image'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
 import loginAvatarImage from '../assets/avatar.jpg'
 import { loginSchema } from '../validation/schema'
-import { loginRequest } from '../network/requests'
 import { pages as pagesRoutes } from '../utils/routes'
+import { useLoginMutation } from '../api/chatApi'
+import { authActions } from '../slices/auth'
 
 const Login = () => {
   const { t } = useTranslation('Components', { keyPrefix: 'Login' })
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [login] = useLoginMutation()
   return (
     <Container
       fluid
@@ -44,18 +48,22 @@ const Login = () => {
                 initialValues={{ username: '', password: '' }}
                 validateOnBlur
                 validationSchema={loginSchema}
-                onSubmit={(values, actions) => {
-                  loginRequest(values)
-                    .then(() => {
-                      navigate(pagesRoutes.root())
-                    })
-                    .catch((err) => {
-                      if (err.response.status === 401) {
-                        actions.setStatus(401)
-                        actions.setErrors({ password: 'wrongUser' })
-                      }
-                      else throw new Error(err)
-                    })
+                onSubmit={async (values, actions) => {
+                  try {
+                    const result = await login(values).unwrap()
+                    localStorage.setItem('user', JSON.stringify(result))
+                    dispatch(authActions.setAuth(result))
+                    navigate(pagesRoutes.root())
+                  }
+                  catch (err) {
+                    if (err.status === 401) {
+                      actions.setStatus(401)
+                      actions.setErrors({ password: 'wrongUser' })
+                    }
+                    else {
+                      throw err
+                    }
+                  }
                 }}
               >
                 {
@@ -162,18 +170,14 @@ const Login = () => {
                   t('Form.noAccount')
                 }
               </span>
-              <Card.Link
-                href="/signup"
+              <Link
+                to={pagesRoutes.signup()}
                 aria-label={t('Form.aria.linkRegisterAccount')}
-                onClick={(e) => {
-                  e.preventDefault()
-                  navigate(pagesRoutes.signup())
-                }}
               >
                 {
                   t('Form.registerAccount')
                 }
-              </Card.Link>
+              </Link>
             </Card.Footer>
           </Card>
         </Col>

@@ -1,43 +1,11 @@
 import {
   createSlice,
   createEntityAdapter,
-  createAsyncThunk,
   createSelector,
 } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { messages as messagesRoute } from '../utils/routes.js'
-import { deleteChannel } from './channels.js'
+import { chatApi } from '../api/chatApi.js'
 
 const messagesAdapter = createEntityAdapter()
-
-export const sendMessage = createAsyncThunk(
-  'messages/sendMessage',
-  async ({ token, messageObj }) => {
-    const response = await axios.post(
-      messagesRoute.post(),
-      messageObj,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    return response.data
-  },
-)
-
-export const fetchMessages = createAsyncThunk(
-  'messages/fetchMessages',
-  async (token) => {
-    const response = await axios
-      .get(messagesRoute.getAll(), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    return response.data
-  },
-)
 
 const initialState = messagesAdapter.getInitialState()
 
@@ -50,9 +18,9 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.fulfilled, (state, { payload }) => messagesAdapter
+      .addMatcher(chatApi.endpoints.getMessages.matchFulfilled, (state, { payload }) => messagesAdapter
         .setAll(state, payload))
-      .addCase(deleteChannel.fulfilled, (state, { payload }) => {
+      .addMatcher(chatApi.endpoints.deleteChannel.matchFulfilled, (state, { payload }) => {
         const entitiesForDeleting = Object.entries(state.entities)
           .filter(([, { channelId }]) => channelId === payload.id)
           .map(([key]) => key)

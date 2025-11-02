@@ -12,11 +12,21 @@ const toastSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addMatcher(isRejectedAction, (state, payload) => Object
-        .assign(state, { message: { id: 1, code: payload.error.code } }))
+      .addMatcher(isRejectedAction, (state, payload) => {
+        // Skip 401 errors (handled by auth slice)
+        if (payload.error?.status === 401) {
+          return state
+        }
+        // Only show errors with proper error code
+        const errorCode = payload.error?.data?.code || payload.error?.code || payload.error?.status
+        if (!errorCode) {
+          return state
+        }
+        return Object.assign(state, { message: { id: 1, code: errorCode } })
+      })
       .addMatcher(isFulfilledAction, (state, payload) => {
         switch (true) {
-          case /postNewChannel/.test(payload.type):
+          case /createChannel/.test(payload.type):
             return Object.assign(state, { message: { id: 0, code: 'CHANNEL_CREATED' } })
           case /renameChannel/.test(payload.type):
             return Object.assign(state, { message: { id: 0, code: 'CHANNEL_RENAMED' } })

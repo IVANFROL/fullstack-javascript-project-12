@@ -1,27 +1,28 @@
-/* global process */
 export const pages = {
   signup: () => '/signup',
   login: () => '/login',
   root: () => '/',
 }
 
-const verApi = process.env.API_VER || '/api/v1'
+const verApi = import.meta.env.VITE_API_VER || '/api/v1'
 
+// Для RTK Query: возвращаем только относительные пути, так как baseUrl уже установлен
 export const users = {
-  login: () => `${verApi}/login`,
-  signup: () => `${verApi}/signup`,
+  login: () => '/login',
+  signup: () => '/signup',
 }
 
+// Для RTK Query: возвращаем только относительные пути, так как baseUrl уже установлен
 export const channels = {
-  getAll: () => `${verApi}/channels`,
-  post: () => `${verApi}/channels`,
-  patch: channelId => `${verApi}/channels/${channelId}`,
-  delete: channelId => `${verApi}/channels/${channelId}`,
+  getAll: () => '/channels',
+  post: () => '/channels',
+  patch: channelId => `/channels/${channelId}`,
+  delete: channelId => `/channels/${channelId}`,
 }
 
 export const messages = {
-  getAll: () => `${verApi}/messages`,
-  post: () => `${verApi}/messages`,
-  patch: messageId => `${verApi}/messages/${messageId}`,
-  delete: messageId => `${verApi}/messages/${messageId}`,
+  getAll: () => '/messages',
+  post: () => '/messages',
+  patch: messageId => `/messages/${messageId}`,
+  delete: messageId => `/messages/${messageId}`,
 }

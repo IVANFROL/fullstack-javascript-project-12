@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { users as usersRoutes } from '../utils/routes.js'
+
+const verApi = import.meta.env.VITE_API_VER || '/api/v1'
 
 export const loginRequest = values => axios({
   method: 'post',
-  url: usersRoutes.login(),
+  url: `${verApi}/login`,
   data: {
     username: values.username,
     password: values.password,
@@ -15,7 +16,7 @@ export const loginRequest = values => axios({
 
 export const signUpRequest = values => axios({
   method: 'post',
-  url: usersRoutes.signup(),
+  url: `${verApi}/signup`,
   data: {
     username: values.username,
     password: values.password,

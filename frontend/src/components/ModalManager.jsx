@@ -25,9 +25,9 @@ const ModalManager = () => {
 
   return (
     <CurrentModal
-      handleSetState={handleClose}
-      modalState={type}
-      extraData={channelId}
+      handleClose={handleClose}
+      modalState={isOpen}
+      channelId={channelId}
     />
   )
 }

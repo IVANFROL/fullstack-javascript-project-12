@@ -1,24 +1,16 @@
 import Modal from 'react-bootstrap/Modal'
-import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Button from 'react-bootstrap/Button'
 
-import { selectAuth } from '../../slices/auth'
-import { deleteChannel } from '../../slices/channels'
+import { useDeleteChannelMutation } from '../../api/chatApi'
 
-const DeleteChannel = ({ handleSetState, modalState, extraData }) => {
+const DeleteChannel = ({ handleClose, modalState, channelId }) => {
   const { t } = useTranslation('Components', { keyPrefix: 'DeleteChannel' })
-  const dispatch = useDispatch()
-  const { token } = useSelector(selectAuth)
-  const idModalChannel = extraData
+  const [deleteChannel] = useDeleteChannelMutation()
 
-  const handleClose = () => {
-    handleSetState(false)
-  }
-
-  const handleDelete = () => {
-    dispatch(deleteChannel({ token, channelId: idModalChannel }))
-    handleSetState(false)
+  const handleDelete = async () => {
+    await deleteChannel(channelId)
+    handleClose()
   }
 
   return (

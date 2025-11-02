@@ -1,64 +1,10 @@
 import {
   createSlice,
   createEntityAdapter,
-  createAsyncThunk,
 } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { channels as channelsRoute } from '../utils/routes.js'
+import { chatApi } from '../api/chatApi.js'
 
 const channelsAdapter = createEntityAdapter()
-
-export const fetchChannels = createAsyncThunk(
-  'channels/fetchChannels',
-  async (token) => {
-    const response = await axios
-      .get(channelsRoute.getAll(), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    return response.data
-  },
-)
-
-export const postNewChannel = createAsyncThunk(
-  'channels/postNewChannel',
-  async ({ token, channelName }) => {
-    const response = await axios
-      .post(channelsRoute.post(), { name: channelName }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    return response.data
-  },
-)
-
-export const renameChannel = createAsyncThunk(
-  'channels/renameChannel',
-  async ({ token, channelId, channelName }) => {
-    const response = await axios
-      .patch(channelsRoute.patch(channelId), { name: channelName }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    return response.data
-  },
-)
-
-export const deleteChannel = createAsyncThunk(
-  'channels/deleteChannel',
-  async ({ token, channelId }) => {
-    const response = await axios
-      .delete(channelsRoute.delete(channelId), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    return response.data
-  },
-)
 
 const initialState = channelsAdapter.getInitialState()
 
@@ -80,7 +26,7 @@ const channelsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChannels.fulfilled, (state, { payload }) => {
+      .addMatcher(chatApi.endpoints.getChannels.matchFulfilled, (state, { payload }) => {
         channelsAdapter.setAll(state, payload)
         if (state.idSelectedChannel === null) {
           return Object.assign(state, {
@@ -89,7 +35,7 @@ const channelsSlice = createSlice({
         }
         return state
       })
-      .addCase(deleteChannel.fulfilled, (state, { payload }) => {
+      .addMatcher(chatApi.endpoints.deleteChannel.matchFulfilled, (state, { payload }) => {
         channelsAdapter.removeOne(state, payload.id)
         if (state.idSelectedChannel === payload.id) {
           return Object.assign(state, {
@@ -98,7 +44,7 @@ const channelsSlice = createSlice({
         }
         return state
       })
-      .addCase(postNewChannel.fulfilled, (state, { payload }) => Object.assign(state, {
+      .addMatcher(chatApi.endpoints.createChannel.matchFulfilled, (state, { payload }) => Object.assign(state, {
         idSelectedChannel: payload.id,
       }))
   },

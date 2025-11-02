@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchChannels } from './channels.js'
+import { chatApi } from '../api/chatApi.js'
 
 const getUserFromStorage = () => {
   const userData = localStorage.getItem('user')
@@ -33,8 +33,8 @@ const authSlice = createSlice({
     },
   },
   extraReducers: builder => builder
-    .addCase(fetchChannels.rejected, (state, payload) => {
-      if (payload.error.code === 'ERR_BAD_REQUEST') {
+    .addMatcher(chatApi.endpoints.getChannels.matchRejected, (state, payload) => {
+      if (payload.error.status === 401) {
         localStorage.removeItem('user')
         return {
           username: null,

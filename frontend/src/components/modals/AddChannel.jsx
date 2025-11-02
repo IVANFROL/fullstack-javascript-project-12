@@ -1,31 +1,37 @@
 import Modal from 'react-bootstrap/Modal'
 import { useFormik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import leo from 'leo-profanity'
 
-import { postNewChannel, channelsSelectors } from '../../slices/channels'
+import { useCreateChannelMutation } from '../../api/chatApi'
+import { channelsSelectors } from '../../slices/channels'
 import { channelsNamingSchema } from '../../validation/schema'
-import { selectAuth } from '../../slices/auth'
 
-const AddChannel = ({ handleSetState, modalState }) => {
+const AddChannel = ({ handleClose, modalState }) => {
   const { t } = useTranslation('Components', { keyPrefix: 'AddChannel' })
-  const dispatch = useDispatch()
-  const { token } = useSelector(selectAuth)
   const allChannels = useSelector(channelsSelectors.selectEntities)
+  const [createChannel] = useCreateChannelMutation()
 
   const formik = useFormik({
     initialValues: {
       channelName: '',
     },
     validationSchema: channelsNamingSchema,
-    onSubmit: ({ channelName }) => {
+    onSubmit: async ({ channelName }) => {
       if (!formik.errors.channelName) {
+        if (leo.check(channelName)) {
+          formik.setErrors({
+            channelName: t('errors.profanity'),
+          })
+          return
+        }
         const channel = Object.values(allChannels).find(({ name }) => channelName === name)
         if (!channel) {
-          dispatch(postNewChannel({ token, channelName }))
-          handleSetState(false)
+          await createChannel({ channelName })
+          handleClose()
         }
         else {
           formik.setErrors({
@@ -36,10 +42,6 @@ const AddChannel = ({ handleSetState, modalState }) => {
     },
     validateOnChange: false,
   })
-
-  const handleClose = () => {
-    handleSetState(false)
-  }
 
   return (
     <Modal show={modalState} onHide={handleClose} centered>
