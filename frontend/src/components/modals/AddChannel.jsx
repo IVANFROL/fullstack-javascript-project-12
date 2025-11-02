@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import leo from 'leo-profanity'
 
 import { useCreateChannelMutation } from '../../api/chatApi'
 import { channelsSelectors } from '../../slices/channels'
@@ -22,12 +21,6 @@ const AddChannel = ({ handleClose, modalState }) => {
     validationSchema: channelsNamingSchema,
     onSubmit: async ({ channelName }) => {
       if (!formik.errors.channelName) {
-        if (leo.check(channelName)) {
-          formik.setErrors({
-            channelName: t('errors.profanity'),
-          })
-          return
-        }
         const channel = Object.values(allChannels).find(({ name }) => channelName === name)
         if (!channel) {
           await createChannel({ channelName })
