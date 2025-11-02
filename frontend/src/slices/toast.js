@@ -6,7 +6,6 @@ const initialState = {
 }
 
 const isRejectedAction = action => action.type.endsWith('rejected')
-const isFulfilledAction = action => action.type.endsWith('fulfilled')
 
 const toastSlice = createSlice({
   name: 'toast',
